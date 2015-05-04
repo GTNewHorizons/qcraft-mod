@@ -22,6 +22,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
@@ -36,6 +37,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -44,6 +46,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.security.PublicKey;
 import java.util.*;
 
@@ -344,7 +347,9 @@ public class QCraft
     {
         if( !player.worldObj.isRemote )
         {
-            return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped( player.getCommandSenderName() );
+        	// Update from 1.7.2 to 1.7.10
+        	return MinecraftServer.getServer().getConfigurationManager().func_152596_g( player.getGameProfile() );
+            //return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped( player.getCommandSenderName() );
         }
         else
         {
@@ -656,9 +661,18 @@ public class QCraft
 
     private static LuggageVerificationResult verifyIncomingLuggage( EntityPlayer instigator, EntityPlayer entityPlayer, byte[] signedLuggageData, boolean forceVerify ) throws IOException
     {
-        NBTTagCompound signedLuggage = CompressedStreamTools.decompress( signedLuggageData );
-        byte[] luggageData = signedLuggage.getByteArray("luggage");
-        NBTTagCompound luggage = CompressedStreamTools.decompress( luggageData );
+    	// Update from 1.7.2 to 1.7.10
+    	ByteBuf signedLuggageBuf = Unpooled.wrappedBuffer(signedLuggageData);
+    	NBTTagCompound signedLuggage = ByteBufUtils.readTag(signedLuggageBuf);
+    	byte[] luggageData = signedLuggage.getByteArray("luggage");
+
+    	ByteBuf luggageBuf = Unpooled.wrappedBuffer(luggageData);
+    	NBTTagCompound luggage = ByteBufUtils.readTag(luggageBuf);    	
+    	
+
+        //NBTTagCompound signedLuggage = CompressedStreamTools.decompress( signedLuggageData );
+        //byte[] luggageData = signedLuggage.getByteArray("luggage");
+        //NBTTagCompound luggage = CompressedStreamTools.decompress( luggageData );
 
         if( signedLuggage.hasKey( "key" ) )
         {
@@ -798,10 +812,19 @@ public class QCraft
             LuggageVerificationResult verificationResult = verifyIncomingLuggage( instigator, entityPlayer, signedLuggageData, forceVerify );
             if( verificationResult != LuggageVerificationResult.UNTRUSTED )
             {
+            	// Update from 1.7.2 to 1.7.10
+            	ByteBuf signedLuggageBuf = Unpooled.wrappedBuffer(signedLuggageData);
+            	NBTTagCompound signedLuggage = ByteBufUtils.readTag(signedLuggageBuf);
+            	byte[] luggageData = signedLuggage.getByteArray("luggage");
+
+            	ByteBuf luggageBuf = Unpooled.wrappedBuffer(luggageData);
+            	NBTTagCompound luggage = ByteBufUtils.readTag(luggageBuf); 
+            	
+            	
                 // Decompress the luggage
-                NBTTagCompound signedLuggage = CompressedStreamTools.decompress( signedLuggageData );
-                byte[] luggageData = signedLuggage.getByteArray( "luggage" );
-                NBTTagCompound luggage = CompressedStreamTools.decompress( luggageData );
+                //NBTTagCompound signedLuggage = CompressedStreamTools.decompress( signedLuggageData );
+                //byte[] luggageData = signedLuggage.getByteArray( "luggage" );
+                //NBTTagCompound luggage = CompressedStreamTools.decompress( luggageData );
 
                 // Unpack items
                 if( luggage.hasKey( "items" ) )

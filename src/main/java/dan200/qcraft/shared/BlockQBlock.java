@@ -320,10 +320,18 @@ public class BlockQBlock extends BlockSand
         // Add AABB if so
         if( solid )
         {
-            AxisAlignedBB aabb = AxisAlignedBB.getAABBPool().getAABB(
+            /*AxisAlignedBB aabb = AxisAlignedBB.getAABBPool().getAABB(
                     (double) x, (double) y, (double) z,
                     (double) x + 1.0, (double) y + 1.0, (double) z + 1.0
+            );*/
+        	
+        	// Update from 1.7.2 to 1.7.10
+            AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(
+            (double) x, (double) y, (double) z,
+            (double) x + 1.0, (double) y + 1.0, (double) z + 1.0
             );
+
+        	
             if( aabb != null && aabb.intersectsWith( bigBox ) )
             {
                 list.add( aabb );
