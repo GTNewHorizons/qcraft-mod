@@ -689,7 +689,7 @@ public class TileEntityQuantumComputer extends TileEntity
         AreaNotTransportable,
         DestinationNotTransportable,
         FrameDeployed,
-        NameConflict;
+        NameConflict, AreaTransportDisabled;
 
         public static String decode( TeleportError error )
         {
@@ -771,6 +771,11 @@ public class TileEntityQuantumComputer extends TileEntity
             }
         }
 
+        if (!QCraft.allowAreaTeleport)
+        {
+        	return TeleportError.AreaTransportDisabled;
+        }
+        
         return TeleportError.Ok;
     }
 
@@ -814,7 +819,7 @@ public class TileEntityQuantumComputer extends TileEntity
             }
 
             // Effects
-            worldObj.playSoundEffect( xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "mob.endermen.portal", 1.0F, 1.0F );
+            worldObj.playSoundEffect( xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "qCraft:quantum_teleport", 1.0F, 1.0F );
         }
         return error;
     }
@@ -1303,7 +1308,7 @@ public class TileEntityQuantumComputer extends TileEntity
             }
 
             // Effects
-            worldObj.playSoundEffect( xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "mob.endermen.portal", 1.0F, 1.0F );
+            worldObj.playSoundEffect( xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "qCraft:quantum_teleport", 1.0F, 1.0F );
         }
         return error;
     }
@@ -1339,7 +1344,7 @@ public class TileEntityQuantumComputer extends TileEntity
             }
 
             // Effects
-            worldObj.playSoundEffect( xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "mob.endermen.portal", 1.0F, 1.0F );
+            worldObj.playSoundEffect( xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "qCraft:quantum_teleport", 1.0F, 1.0F );
         }
         return error;
     }

@@ -17,13 +17,16 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.0"
-group= "com.yourname.modid" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "modid"
+version = "1.2"
+group= "dan200.qcraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "qCraft"
 
 minecraft {
     version = "1.7.10-10.13.2.1291"
     runDir = "eclipse"
+	
+	replaceIn "src/main/java/dan200/QCraft.java"
+	replace "GRADLETOKEN_VERSION", project.version
 }
 
 dependencies {
@@ -55,7 +58,7 @@ processResources
         // replace version and mcversion
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-        
+
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'

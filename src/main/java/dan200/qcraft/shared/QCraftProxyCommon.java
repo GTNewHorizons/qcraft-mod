@@ -168,36 +168,64 @@ public abstract class QCraftProxyCommon implements IQCraftProxy
 
         // RECIPES
 
-        // Automated Observer recipe
-        ItemStack observer = new ItemStack( QCraft.Blocks.quantumLogic, 1, BlockQuantumLogic.SubType.ObserverOff );
-        GameRegistry.addRecipe( observer, new Object[]{
-            "XXX", "XYX", "XZX",
-            Character.valueOf( 'X' ), Blocks.stone,
-            Character.valueOf( 'Y' ), new ItemStack( QCraft.Items.eos, 1, ItemEOS.SubType.Observation ),
-            Character.valueOf( 'Z' ), Items.redstone
-        } );
+        if (QCraft.registerDefaultRecipes)
+        {
+	        // Automated Observer recipe
+	        ItemStack observer = new ItemStack( QCraft.Blocks.quantumLogic, 1, BlockQuantumLogic.SubType.ObserverOff );
+	        GameRegistry.addRecipe( observer, new Object[]{
+	            "XXX", "XYX", "XZX",
+	            Character.valueOf( 'X' ), Blocks.stone,
+	            Character.valueOf( 'Y' ), new ItemStack( QCraft.Items.eos, 1, ItemEOS.SubType.Observation ),
+	            Character.valueOf( 'Z' ), Items.redstone
+	        } );
+	
+	        // EOS recipe
+	        ItemStack eos = new ItemStack( QCraft.Items.eos, 1, ItemEOS.SubType.Superposition );
+	        GameRegistry.addRecipe( eos, new Object[]{
+	            "XX", "XX",
+	            Character.valueOf( 'X' ), QCraft.Items.quantumDust,
+	        } );
+	
+	        // EOO recipe
+	        ItemStack eoo = new ItemStack( QCraft.Items.eos, 1, ItemEOS.SubType.Observation );
+	        GameRegistry.addRecipe( eoo, new Object[]{
+	            " X ", "X X", " X ",
+	            Character.valueOf( 'X' ), QCraft.Items.quantumDust,
+	        } );
+	
+	        // EOE recipe
+	        ItemStack eoe = new ItemStack( QCraft.Items.eos, 1, ItemEOS.SubType.Entanglement );
+	        GameRegistry.addRecipe( eoe, new Object[]{
+	            "X X", " Y ", "X X",
+	            Character.valueOf( 'X' ), QCraft.Items.quantumDust,
+	            Character.valueOf( 'Y' ), eos,
+	        } );
 
-        // EOS recipe
-        ItemStack eos = new ItemStack( QCraft.Items.eos, 1, ItemEOS.SubType.Superposition );
-        GameRegistry.addRecipe( eos, new Object[]{
-            "XX", "XX",
-            Character.valueOf( 'X' ), QCraft.Items.quantumDust,
-        } );
+	        // Quantum Computer recipe
+	        ItemStack regularQuantumComputer = ItemQuantumComputer.create( -1, 1 );
+	        GameRegistry.addRecipe( regularQuantumComputer, new Object[] {
+	            "XXX", "XYX", "XZX",
+	            Character.valueOf( 'X' ), Items.iron_ingot,
+	            Character.valueOf( 'Y' ), QCraft.Items.quantumDust,
+	            Character.valueOf( 'Z' ), Blocks.glass_pane,
+	        } );
 
-        // EOO recipe
-        ItemStack eoo = new ItemStack( QCraft.Items.eos, 1, ItemEOS.SubType.Observation );
-        GameRegistry.addRecipe( eoo, new Object[]{
-            " X ", "X X", " X ",
-            Character.valueOf( 'X' ), QCraft.Items.quantumDust,
-        } );
+	        // Quantum Goggles recipe
+	        ItemStack quantumGoggles = new ItemStack( QCraft.Items.quantumGoggles, 1, ItemQuantumGoggles.SubTypes.Quantum );
+	        GameRegistry.addRecipe( quantumGoggles, new Object[] {
+	            "XYX",
+	            Character.valueOf( 'X' ), Blocks.glass_pane,
+	            Character.valueOf( 'Y' ), QCraft.Items.quantumDust,
+	        } );
 
-        // EOE recipe
-        ItemStack eoe = new ItemStack( QCraft.Items.eos, 1, ItemEOS.SubType.Entanglement );
-        GameRegistry.addRecipe( eoe, new Object[]{
-            "X X", " Y ", "X X",
-            Character.valueOf( 'X' ), QCraft.Items.quantumDust,
-            Character.valueOf( 'Y' ), eos,
-        } );
+	        // Anti-observation goggles recipe
+	        ItemStack aoGoggles = new ItemStack( QCraft.Items.quantumGoggles, 1, ItemQuantumGoggles.SubTypes.AntiObservation );
+	        GameRegistry.addRecipe( aoGoggles, new Object[] {
+	            "XYX",
+	            Character.valueOf( 'X' ), Blocks.glass_pane,
+	            Character.valueOf( 'Y' ), new ItemStack( QCraft.Items.eos, 1, ItemEOS.SubType.Observation ),
+	        } );
+        }
 
         // qBlock recipes
         GameRegistry.addRecipe( new QBlockRecipe() );
@@ -206,36 +234,14 @@ public abstract class QCraftProxyCommon implements IQCraftProxy
         GameRegistry.addRecipe( new EntangledQBlockRecipe() );
         RecipeSorter.register( "qCraft:entangled_qBlock", EntangledQBlockRecipe.class, SHAPED, "after:minecraft:shapeless" );
 
-        // Quantum Computer recipe
-        ItemStack regularQuantumComputer = ItemQuantumComputer.create( -1, 1 );
-        GameRegistry.addRecipe( regularQuantumComputer, new Object[] {
-            "XXX", "XYX", "XZX",
-            Character.valueOf( 'X' ), Items.iron_ingot,
-            Character.valueOf( 'Y' ), QCraft.Items.quantumDust,
-            Character.valueOf( 'Z' ), Blocks.glass_pane,
-        } );
-
-        // Entangled Quantum Computer
-        ItemStack entangledQuantumComputer = ItemQuantumComputer.create( 0, 1 );
-        GameRegistry.addRecipe( new EntangledQuantumComputerRecipe() );
-        RecipeSorter.register( "qCraft:entangled_computer", EntangledQuantumComputerRecipe.class, SHAPED, "after:minecraft:shapeless" );
-
-        // Quantum Goggles recipe
-        ItemStack quantumGoggles = new ItemStack( QCraft.Items.quantumGoggles, 1, ItemQuantumGoggles.SubTypes.Quantum );
-        GameRegistry.addRecipe( quantumGoggles, new Object[] {
-            "XYX",
-            Character.valueOf( 'X' ), Blocks.glass_pane,
-            Character.valueOf( 'Y' ), QCraft.Items.quantumDust,
-        } );
-
-        // Anti-observation goggles recipe
-        ItemStack aoGoggles = new ItemStack( QCraft.Items.quantumGoggles, 1, ItemQuantumGoggles.SubTypes.AntiObservation );
-        GameRegistry.addRecipe( aoGoggles, new Object[] {
-            "XYX",
-            Character.valueOf( 'X' ), Blocks.glass_pane,
-            Character.valueOf( 'Y' ), new ItemStack( QCraft.Items.eos, 1, ItemEOS.SubType.Observation ),
-        } );
-
+        if (QCraft.allowAreaTeleport)
+        {
+	        // Entangled Quantum Computer
+	        ItemStack entangledQuantumComputer = ItemQuantumComputer.create( 0, 1 );
+	        GameRegistry.addRecipe( new EntangledQuantumComputerRecipe() );
+	        RecipeSorter.register( "qCraft:entangled_computer", EntangledQuantumComputerRecipe.class, SHAPED, "after:minecraft:shapeless" );
+        }
+        
         if( QCraft.enableWorldGenReplacementRecipes )
         {
             // Quantum dust recipe

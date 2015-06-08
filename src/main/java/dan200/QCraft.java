@@ -54,7 +54,7 @@ import java.util.*;
 // UNIVERSAL //
 ///////////////
 
-@Mod( modid = "qCraft", name = "qCraft", version = "${version}" )
+@Mod( modid = "qCraft", name = "qCraft", version = "GRADLETOKEN_VERSION" )
 public class QCraft
 {
     // Static Settings
@@ -75,6 +75,8 @@ public class QCraft
     public static boolean letPlayersEditPortalServerList = false;
     public static boolean letAdminsVerifyPortalServers = true;
     public static boolean letPlayersVerifyPortalServers = false;
+    public static boolean allowAreaTeleport = false;
+    public static boolean registerDefaultRecipes = false;
 
     // Blocks and Items
     public static class Blocks
@@ -173,6 +175,15 @@ public class QCraft
         prop.comment = "Set whether players can verify an inter-server portal link";
         letPlayersVerifyPortalServers = prop.getBoolean( letPlayersVerifyPortalServers );
 
+        prop = config.get( Configuration.CATEGORY_GENERAL, "allowAreaTeleport", allowAreaTeleport );
+        prop.comment = "Set whether areas can be teleported with a proper setup";
+        allowAreaTeleport = prop.getBoolean( allowAreaTeleport );
+       
+        prop = config.get( Configuration.CATEGORY_GENERAL, "registerDefaultRecipes", registerDefaultRecipes );
+        prop.comment = "Set whether the default recipes shall be available. Set to false if you want to do recipes with minetweaker";
+        registerDefaultRecipes = prop.getBoolean( registerDefaultRecipes );
+        //registerDefaultRecipes
+        
         // None
 
         // Save config
